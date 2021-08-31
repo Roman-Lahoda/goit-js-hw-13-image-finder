@@ -3,7 +3,6 @@ import refs from "./get-refs";
 import createGalleryMurkup from "../templates/gallery";
 import "../../node_modules/material-design-icons/iconfont/material-icons.css";
 import Notiflix from "notiflix";
-import "../../node_modules/notiflix/dist/notiflix-aio-3.0.1.min.js";
 import "../sass/main.scss";
 const searchImage = new SearchImage();
 
@@ -113,16 +112,14 @@ function onESCKeydown(e) {
   onModalCloseBtnClick();
 }
 function updatePaginate() {
-  refs.paginate.textContent = `${currentImgIndex + 1}/${arrayImg.length}`;
+  refs.paginate.textContent = `${currentImgIndex + 1} / ${arrayImg.length}`;
 }
 
 function checkCurrentImg() {
   if (refs.modalEl.classList.contains("is-open")) {
     const currentImgSrc = refs.modalImgEl.src;
     arrayImg = [...document.querySelectorAll(".grid__item__image")];
-    console.log(arrayImg);
     currentImgIndex = arrayImg.indexOf(arrayImg.find(item => item.dataset.origin === currentImgSrc));
-    console.log(currentImgIndex);
   }
 }
 function onArrowPress() {
@@ -131,12 +128,10 @@ function onArrowPress() {
 }
 
 function turnRight() {
-  console.log(currentImgIndex);
   if (currentImgIndex === arrayImg.length - 1) {
     loadMore();
   }
   const nextImg = arrayImg[currentImgIndex + 1];
-  console.log(nextImg);
   if (nextImg) {
     refs.modalImgEl.src = nextImg.dataset.origin;
     refs.modalImgEl.alt = nextImg.alt;
