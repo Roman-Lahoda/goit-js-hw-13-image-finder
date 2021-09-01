@@ -35,17 +35,21 @@ function createGallary(e) {
   searchImage.resetPage();
   e.preventDefault();
   searchImage.queary = refs.input.value;
-  searchImage.axiosImage().then(obj => {
-    if (obj.data.hits.length > 0) {
-      Notiflix.Notify.success(`We found ${obj.data.totalHits} pictures for you`);
-      refs.gallery.innerHTML = "";
-      createDOMelement(obj);
-      searchImage.incrementPage();
-    } else {
-      Notiflix.Notify.warning("We didn't find no one image, please try another search request");
-      Notiflix.Loading.remove();
-    }
-  });
+  if (searchImage.searchQueary) {
+    console.log("test");
+
+    searchImage.axiosImage().then(obj => {
+      if (obj.data.hits.length > 0) {
+        Notiflix.Notify.success(`We found ${obj.data.totalHits} pictures for you`);
+        refs.gallery.innerHTML = "";
+        createDOMelement(obj);
+        searchImage.incrementPage();
+      } else {
+        Notiflix.Notify.warning("We didn't find no one image, please try another search request");
+        Notiflix.Loading.remove();
+      }
+    });
+  }
 }
 
 function createDOMelement(obj) {
