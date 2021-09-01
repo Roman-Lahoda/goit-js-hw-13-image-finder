@@ -36,8 +36,6 @@ function createGallary(e) {
   e.preventDefault();
   searchImage.queary = refs.input.value;
   if (searchImage.searchQueary) {
-    console.log("test");
-
     searchImage.axiosImage().then(obj => {
       if (obj.data.hits.length > 0) {
         Notiflix.Notify.success(`We found ${obj.data.totalHits} pictures for you`);
