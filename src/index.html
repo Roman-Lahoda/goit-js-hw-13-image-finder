@@ -17,17 +17,13 @@
   </head>
   <body>
     <header class="header">
-      <h1>
-        Thousands of pictures wait for you!
-        <!-- <br />
-        Just search what you want -->
-      </h1>
       <form class="search-form" id="search-form">
         <input type="text" name="searchQuery" autocomplete="off" placeholder="Search images..." />
         <button type="submit"><span class="material-icons"> search </span></button>
       </form>
     </header>
     <main>
+      <h1 class="visually-hidden" id="title">Image list</h1>
       <div class="container">
         <ul class="gallery grid"></ul>
       </div>
@@ -49,6 +45,9 @@
         </button>
         <p class="slider-paginage-js"></p>
       </div>
+      <button type="button" class="btn-top">
+        <a><span class="material-icons"> arrow_upward </span></a>
+      </button>
     </main>
     <script src="./js/index.js"></script>
   </body>

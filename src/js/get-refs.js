@@ -5,6 +5,7 @@ export default {
   buttonSearch: document.querySelector("button"),
   gallery: document.querySelector("ul"),
   more: document.querySelector('[data-name="load-more"]'),
+  btnTop: document.querySelector(".btn-top"),
   modalEl: document.querySelector(".js-lightbox"),
   modalImgEl: document.querySelector(".lightbox__image"),
   overlayEl: document.querySelector(".lightbox__overlay"),

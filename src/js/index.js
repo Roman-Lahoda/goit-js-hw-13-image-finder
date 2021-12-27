@@ -6,8 +6,12 @@ import Notiflix from "notiflix";
 import "../sass/main.scss";
 const searchImage = new SearchImage();
 
-refs.form.addEventListener("submit", createGallary);
+refs.form.addEventListener("submit", createGallery);
 refs.input.focus();
+
+refs.btnTop.addEventListener("click", () => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
 
 Notiflix.Loading.init({
   svgColor: "#393b3d",
@@ -31,7 +35,7 @@ function AddObserver() {
   observer.observe(refs.gallery.lastElementChild);
 }
 
-function createGallary(e) {
+function createGallery(e) {
   searchImage.resetPage();
   e.preventDefault();
   searchImage.queary = refs.input.value;
@@ -42,6 +46,7 @@ function createGallary(e) {
         refs.gallery.innerHTML = "";
         createDOMelement(obj);
         searchImage.incrementPage();
+        refs.input.value = "";
       } else {
         Notiflix.Notify.warning("We didn't find no one image, please try another search request");
         Notiflix.Loading.remove();
@@ -63,11 +68,12 @@ function createDOMelement(obj) {
   }
 }
 
-function loadMore() {
-  searchImage.axiosImage().then(obj => {
-    createDOMelement(obj);
-    searchImage.incrementPage();
-  });
+async function loadMore() {
+  const result = await searchImage.axiosImage();
+  createDOMelement(result);
+  searchImage.incrementPage();
+  // updatePaginate();
+
   checkCurrentImg();
 }
 
@@ -76,15 +82,14 @@ function loadMore() {
 let currentImgIndex = 0;
 let arrayImg = null;
 
-document.addEventListener("keydown", onESCKeydown);
 document.addEventListener("keydown", onArrowPress);
-refs.gallery.addEventListener("click", showModalslider);
+refs.gallery.addEventListener("click", showModalSlider);
 
-function showModalslider(e) {
+function showModalSlider(e) {
   if (e.target.nodeName !== "IMG") {
     return;
   }
-  refs.body.classList.add("overflow-hiden");
+  refs.body.classList.add("overflow-hidden");
   e.preventDefault();
   refs.modalEl.classList.add("is-open");
   refs.modalImgEl.src = e.target.closest(".grid__item__image").dataset.origin;
@@ -104,15 +109,9 @@ function onModalCloseBtnClick() {
   refs.modalImgEl.alt = "";
   refs.modalCloseBtn.removeEventListener("click", onModalCloseBtnClick);
   refs.overlayEl.removeEventListener("click", onModalCloseBtnClick);
-  refs.body.classList.remove("overflow-hiden");
+  refs.body.classList.remove("overflow-hidden");
 }
 
-function onESCKeydown(e) {
-  if (e.code !== "Escape") {
-    return;
-  }
-  onModalCloseBtnClick();
-}
 function updatePaginate() {
   refs.paginate.textContent = `${currentImgIndex + 1} / ${arrayImg.length}`;
 }
@@ -127,10 +126,11 @@ function checkCurrentImg() {
 function onArrowPress() {
   if (event.code === "ArrowRight") turnRight();
   if (event.code === "ArrowLeft") turnLeft();
+  if (event.code === "Escape") onModalCloseBtnClick();
 }
 
 function turnRight() {
-  if (currentImgIndex === arrayImg.length - 1) {
+  if (currentImgIndex === arrayImg.length - 2) {
     loadMore();
   }
   const nextImg = arrayImg[currentImgIndex + 1];

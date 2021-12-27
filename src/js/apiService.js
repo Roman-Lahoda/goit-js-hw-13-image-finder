@@ -1,5 +1,6 @@
 import axios from "axios";
 import Notiflix from "notiflix";
+import refs from "../js/get-refs";
 
 export default class SearchImages {
   constructor() {
@@ -10,7 +11,9 @@ export default class SearchImages {
 
   axiosImage() {
     if (this.searchQueary) {
-      Notiflix.Loading.arrows();
+      if (!refs.modalEl.classList.contains("is-open")) {
+        Notiflix.Loading.arrows();
+      }
       return axios
         .get(
           `https://pixabay.com/api/?image_type=photo&orientation=horizontal&q=${this.searchQueary}&page=${this.pageNumber}&per_page=12&key=${this.KEY}`,
